@@ -18,38 +18,68 @@ const GeneratePage = () => {
     setLoading(true);
     console.log("v", value.level);
     setValueInput(value.value);
-    const prompt = `Hãy viết cho tôi ít nhất 6 câu hỏi phỏng vấn khi ứng tuyển công việc: "${valueInput}" với vị trí: "${value.level}" và ngôn ngữ: "${value.language}".
-      Trả về **duy nhất một đối tượng JSON** có định dạng chính xác như sau, không thêm hoặc bớt ký tự nào ngoài JSON:
+    //   Trả về **duy nhất một đối tượng JSON** có định dạng chính xác như sau, không thêm hoặc bớt ký tự nào ngoài JSON:
 
-      {
-        "id": Date.now(),
-        "success": true,
-        "data": [
-          {
-            "question": "[Câu hỏi phỏng vấn]",
-            "key_concepts": ["[nội dung 1]", "[nội dung 2]"],
-            "explanation": "[Đoạn giải thích ngắn gọn, mô tả khái niệm hoặc cơ chế]",
-            "example": [
-              "function example() {\\n  const x = 1;\\n  console.log(x);\\n}"
-            ],
-            "best_practices": "[Nội dung mô tả cách sử dụng đúng hoặc hiệu quả]",
-            "common_mistakes": "[Các lỗi thường gặp liên quan đến chủ đề này]"
-          }
-        ],
-        "metadata": {
-          "jobTitle": "${valueInput}",
-          "level": "${value.level}",
-          "language": "${value.language}",
-          "timestamp": "[lấy ngày tháng năm giờ hiện tại theo format: 'MMM dd, yyyy, hh:mm a']"
-        }
-      }
+    //   {
+    //     "id": Date.now(),
+    //     "success": true,
+    //     "data": [
+    //       {
+    //         "question": "[Câu hỏi phỏng vấn]",
+    //         "key_concepts": ["[nội dung 1]", "[nội dung 2]"],
+    //         "explanation": "[Đoạn giải thích ngắn gọn, mô tả khái niệm hoặc cơ chế]",
+    //         "example": [
+    //           "function example() {\\n  const x = 1;\\n  console.log(x);\\n}"
+    //         ],
+    //         "best_practices": "[Nội dung mô tả cách sử dụng đúng hoặc hiệu quả]",
+    //         "common_mistakes": "[Các lỗi thường gặp liên quan đến chủ đề này]"
+    //       }
+    //     ],
+    //     "metadata": {
+    //       "jobTitle": "${valueInput}",
+    //       "level": "${value.level}",
+    //       "language": "${value.language}",
+    //       "timestamp": "[lấy ngày tháng năm giờ hiện tại theo format: 'MMM dd, yyyy, hh:mm a']"
+    //     }
+    //   }
 
-      Yêu cầu chi tiết:
-      * Trả về ít nhất 4 phần tử khác nhau trong mảng "data".
-      * Không thêm dấu “...” hoặc bất kỳ ký tự ngoài JSON.
-      * Không dùng markdown hoặc ký tự đặc biệt như \`\`\`.
-      * Kết quả phải là JSON hợp lệ, có thể parse được trực tiếp.
-      `;
+    //   Yêu cầu chi tiết:
+    //   * Trả về ít nhất 4 phần tử khác nhau trong mảng "data".
+    //   * Không thêm dấu “...” hoặc bất kỳ ký tự ngoài JSON.
+    //   * Không dùng markdown hoặc ký tự đặc biệt như \`\`\`.
+    //   * Kết quả phải là JSON hợp lệ, có thể parse được trực tiếp.
+    //   `;
+    const prompt = `Hãy viết cho tôi ít nhất 4 câu hỏi phỏng vấn khi ứng tuyển công việc: "${value.value}" với vị trí: "${value.level}" và ngôn ngữ: "${value.language}".
+                    Trả về duy nhất một đối tượng JSON hợp lệ, không có văn bản nào khác ngoài JSON. TUYỆT ĐỐI KHÔNG dùng code block, KHÔNG dùng backticks.
+
+                     Yêu cầu chi tiết:
+                    * Phần "answer" định dạng bằng Markdown thuần túy, có thể hiển thị bullet list bằng dấu "*".
+                    * Thêm dấu * vào trước mỗi nội dung
+                    * Không bọc trong \`\`\`markdown hoặc bất kỳ code block nào.
+                    * Mỗi câu hỏi là một phần tử riêng trong mảng "data".
+                    * Kết quả phải là JSON hợp lệ, có thể parse được trực tiếp.
+                    * Không có ký tự nào trước hoặc sau dấu ngoặc nhọn kết thúc JSON.
+                    * Bắt buộc dùng "\\n" cho xuống dòng trong chuỗi thay vì newline thật.
+                    * Tạo ít nhất 6 phần tử hợp lệ trong "data".
+
+                    CẤU TRÚC JSON CHÍNH XÁC (mẫu, không thêm bớt khóa):
+                    {
+                      "id": Date.now(),
+                      "success": true,
+                      "data": [
+                        {
+                          "question": "[tiêu đề câu hỏi]",
+                          "answer": "### Key Concepts\\n    * [nội dung 1]\\n    * [nội dung 2]\\n\\n### Explanation\\n[Mô tả ngắn]\\n\\n### Example\\n[Một ví dụ ngắn mô tả bằng chữ, không dùng backticks]\\n\\n### Best Practices\\n* [nội dung 1]\\n* [nội dung 2]\\n\\n### Common Mistakes\\n* [nội dung 1]\\n* [nội dung 2]"
+                        }
+                      ],
+                      "metadata": {
+                        "jobTitle": "${value.value}",
+                        "level": "${value.level}",
+                        "language": "${value.language}",
+                      }
+                    }
+                  `;
+
 
     const genAI = new GoogleGenerativeAI(import.meta.env.VITE_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
@@ -60,8 +90,14 @@ const GeneratePage = () => {
     );
     const content = response.response.candidates[0].content.parts[0].text;
     const newData = JSON.parse(
-      content.replace("```json", "").replace("```", "").trim()
+      content
+        .replace("```json", "")
+        .replace("```", "")
+        .replace(/```/g, "")
+        .replace(/\u200B/g, "")
+        .trim()
     );
+    newData.timestamp = Date.now();
     // const parts = content.split(">>>");
     // console.log("parts", parts);
     // const newParts = [];

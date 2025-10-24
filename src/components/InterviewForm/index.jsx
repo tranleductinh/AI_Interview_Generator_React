@@ -19,13 +19,14 @@ const InterviewForm = ({ setValueInput, handleCreate, loading }) => {
   }
  
   return (
-    <form className="space-y-6 bg-card p-6 rounded-lg border border-border">
+    <div className="space-y-6 bg-card p-6 rounded-lg border border-border">
       <div>
         <label htmlFor="" className="block text-sm font-medium mb-2">
           Job Position
         </label>
         <Input
           onChange={(e) => handleValue(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleCreate({value, level, language})}
           className=""
           placeholder="e.g. Frontend Developer"
         ></Input>
@@ -54,7 +55,7 @@ const InterviewForm = ({ setValueInput, handleCreate, loading }) => {
         </div>
       </div>
       {value ? (
-        <Button  disabled={loading} onClick={() => handleCreate({value, level, language})} className="w-full bg-primary" type="button">
+        <Button  disabled={loading} onClick={() => handleCreate({value, level, language})} className="w-full bg-primary">
           {loading === false ? "Generate Questions" : "Generating..."}
         </Button>
       ) : (
@@ -62,7 +63,7 @@ const InterviewForm = ({ setValueInput, handleCreate, loading }) => {
           Generate Questions
         </Button>
       )}
-    </form>
+    </div>
   );
 };
 

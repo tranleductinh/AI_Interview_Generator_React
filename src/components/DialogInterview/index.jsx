@@ -10,10 +10,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import QuestionsList from "../QuestionList";
-import useIsHistoryPage from "@/hooks/useHistory";
+import { useLocation } from "react-router-dom";
 
 export function DialogInterview({ open, onOpenChange, data }) {
-  const isHistoryPage = useIsHistoryPage();
+  const location = useLocation();
+  const pathname = location.pathname
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <form>
@@ -54,7 +55,7 @@ export function DialogInterview({ open, onOpenChange, data }) {
             </div>
           </DialogHeader>
           <div className="p-4">
-            <QuestionsList result={data} isHistoryPage={isHistoryPage} />
+            <QuestionsList result={data} pathname={pathname} />
           </div>
         </DialogContent>
       </form>

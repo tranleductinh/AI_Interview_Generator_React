@@ -1,8 +1,6 @@
 import React from "react";
 
 const HistoryList = ({ handleOpenDialog, handleDelete, data }) => {
- 
-  
   return (
     <div className="space-y-3">
       {data.length > 0 ? (
@@ -25,7 +23,15 @@ const HistoryList = ({ handleOpenDialog, handleDelete, data }) => {
                   </span>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  {item.metadata.timestamp}
+                  {new Intl.DateTimeFormat("en-US", {
+                    timeZone: "Asia/Bangkok",
+                    year: "numeric",
+                    month: "short",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                  }).format(new Date(item.timestamp))}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
                   {item.data.length} questions
