@@ -15,33 +15,36 @@ const HistoryPage = () => {
       ? JSON.parse(localStorage.getItem("data_interview"))
       : []
   );
-  const [getDataByID, setGetDataByID] = useState([]);
+  const [getDataByID, setGetDataByID] = useState("");
   const handleOpen = (id) => {
     setOpenDialog(true);
-    setGetDataByID(data.filter((item) => item.id === id));
+    setGetDataByID(data.find((item) => item.id === id));
   };
 
   useEffect(() => {
     setGetDataByID(getDataByID);
   }, [getDataByID]);
-
+  console.log("getDataByID", getDataByID);
   const handleDeleteAll = () => {
+    alert("Are you sure you want to delete all history?");
     localStorage.removeItem("data_interview");
-    setData([]);
+    setDataFilter([]);
   };
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
     setDataFilter(data.filter((item) => item.id !== id));
     localStorage.setItem("data_interview", JSON.stringify(data));
-  }
+  };
   const handleSearch = (value) => {
     console.log("value", value);
     if (value) {
       setDataFilter(
         data.filter(
           (item) =>
-            item.title.toLowerCase().includes(value.toLowerCase()) ||
-            item.level.toLowerCase().includes(value.toLowerCase())
+            item.metadata.jobTitle
+              .toLowerCase()
+              .includes(value.toLowerCase()) ||
+            item.metadata.level.toLowerCase().includes(value.toLowerCase())
         )
       );
     } else {
@@ -49,7 +52,6 @@ const HistoryPage = () => {
     }
     console.log("dataFilter", dataFilter);
   };
- 
 
   return (
     <div>
@@ -57,8 +59,18 @@ const HistoryPage = () => {
         handleDeleteAll={handleDeleteAll}
         handleSearch={handleSearch}
       />
-      <HistoryList handleOpenDialog={handleOpen} data={data} handleDelete={handleDelete}/>
-      <DialogInterview open={openDialog} onOpenChange={setOpenDialog} data={getDataByID}/>
+      <HistoryList
+        handleOpenDialog={handleOpen}
+        data={dataFilter}
+        handleDelete={handleDelete}
+      />
+      {getDataByID && (
+        <DialogInterview
+          open={openDialog}
+          onOpenChange={setOpenDialog}
+          data={getDataByID}
+        />
+      )}
     </div>
   );
 };

@@ -1,35 +1,40 @@
 import React from "react";
 
 const HistoryList = ({ handleOpenDialog, handleDelete, data }) => {
+ 
+  
   return (
     <div className="space-y-3">
       {data.length > 0 ? (
         data.map((item) => (
-          <div
-            className="bg-card border border-border rounded-lg p-4 hover:border-primary/50 transition cursor-pointer group"
-            
-          >
+          <div className="bg-card border border-border rounded-lg p-4 hover:border-primary/50 transition cursor-pointer group">
             <div className="flex justify-between gap-4">
-              <button onClick={() => handleOpenDialog(item.id)} className="flex-1 text-left hover:opacity-80 transition">
+              <button
+                onClick={() => handleOpenDialog(item.id)}
+                className="flex-1 text-left hover:opacity-80 transition"
+              >
                 <div className="flex gap-3 mb-2 items-center">
                   <h3 className="text-foreground font-semibold">
-                    {item.title}
+                    {item.metadata.jobTitle}
                   </h3>
                   <span className="rounded-full bg-primary/10 px-2 py-1 text-primary text-xs">
-                    {item.level}
+                    {item.metadata.level}
                   </span>
                   <span className="bg-secondary px-2 py-1 text-secondary-foreground rounded-full text-xs">
-                    {item.language}
+                    {item.metadata.language}
                   </span>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Oct 22, 2025, 07:34 PM
+                  {item.metadata.timestamp}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  {item.parts.length} questions
+                  {item.data.length} questions
                 </p>
               </button>
-              <button onClick={() => handleDelete(item.id)} className="group-hover:opacity-100 transition opacity-0 p-2 hover:bg-destructive/10 rounded-lg">
+              <button
+                onClick={() => handleDelete(item.id)}
+                className="group-hover:opacity-100 transition opacity-0 p-2 hover:bg-destructive/10 rounded-lg"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"

@@ -10,8 +10,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import QuestionsList from "../QuestionList";
+import useIsHistoryPage from "@/hooks/useHistory";
 
 export function DialogInterview({ open, onOpenChange, data }) {
+  const isHistoryPage = useIsHistoryPage();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <form>
@@ -21,38 +23,38 @@ export function DialogInterview({ open, onOpenChange, data }) {
           showCloseButton={false}
         >
           <DialogHeader>
-            {data.map((item) => (
-              <div className="flex justify-between items-center p-4 border-border border-b">
-                <div>
-                  <h2 className="text-xl text-foreground">{item.title}</h2>
-                  <p className="text-sm text-muted-foreground">
-                    {item.level} • {item.language}
-                  </p>
-                </div>
-                <DialogClose asChild>
-                  <button className="p-2 hover:bg-muted rounded-lg transition">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      className="lucide lucide-x w-5 h-5"
-                    >
-                      <path d="M18 6 6 18"></path>
-                      <path d="m6 6 12 12"></path>
-                    </svg>
-                  </button>
-                </DialogClose>
+            <div className="flex justify-between items-center p-4 border-border border-b">
+              <div>
+                <h2 className="text-xl text-foreground">
+                  {data.metadata.jobTitle}
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  {data.metadata.level} • {data.metadata.language}
+                </p>
               </div>
-            ))}
+              <DialogClose asChild>
+                <button className="p-2 hover:bg-muted rounded-lg transition">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="lucide lucide-x w-5 h-5"
+                  >
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                  </svg>
+                </button>
+              </DialogClose>
+            </div>
           </DialogHeader>
           <div className="p-4">
-            <QuestionsList result={data} />
+            <QuestionsList result={data} isHistoryPage={isHistoryPage} />
           </div>
         </DialogContent>
       </form>

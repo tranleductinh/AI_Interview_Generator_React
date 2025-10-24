@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import useIsHistoryPage from "@/hooks/useHistory";
 
 const Header = () => {
   const [theme, setTheme] = useState(
     localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
   );
+  const isHistoryPage = useIsHistoryPage();
 
   useEffect(() => {
     if (theme === "dark") {
@@ -35,13 +37,13 @@ const Header = () => {
           <nav className="flex items-center gap-6">
             <Link
               to="/generate"
-              className="transition text-muted-foreground hover:text-foreground"
+              className={`transition text-muted-foreground hover:text-foreground ${isHistoryPage ? "text-muted-foreground" : "text-primary font-semibold"}`}
             >
               Generate
             </Link>
             <Link
               to="history"
-              className="transition text-primary font-semibold"
+              className={`transition hover:text-foreground ${isHistoryPage ? "text-primary font-semibold" : "text-muted-foreground"}`}
             >
               History
             </Link>
