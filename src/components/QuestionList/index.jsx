@@ -40,7 +40,7 @@ const QuestionsList = ({ result, handleClear, handleSave, pathname }) => {
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     className={`'lucide lucide-chevron-down w-5 h-5 text-muted-foreground flex-shrink-0 transition-transform' ${
-                      openCard === true ? "rotate-180" : ""
+                      openCard === index ? "rotate-180" : ""
                     }`}
                   >
                     <path d="m6 9 6 6 6-6"></path>
